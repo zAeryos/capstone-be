@@ -1,4 +1,4 @@
 package it.epicode.capstonebe.models.requestDTO;
 
-public class BookingDTO {
+public record BookingDTO () {
 }

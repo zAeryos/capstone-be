@@ -5,12 +5,14 @@ import it.epicode.capstonebe.models.enums.UserRoles;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
@@ -19,6 +21,7 @@ import java.util.UUID;
 
 @Entity
 @Data
+@NoArgsConstructor
 @Table(name = "users")
 public class User implements UserDetails {
 
@@ -34,17 +37,19 @@ public class User implements UserDetails {
     private     String          phoneNumber;
     @Column(unique = true)
     private     String          username;
+    private     LocalDate       birthday;
     private     String          password;
     private     String          avatar;
     private     List<UserRoles> roles = List.of(UserRoles.USER);
     private     Timestamp       createdAt;
 
-    public User(String name, String surname, String email, String phoneNumber, String username, String password) {
+    public User(String name, String surname, String email, String phoneNumber, String username, LocalDate birthday, String password) {
         this.name           = name;
         this.surname        = surname;
         this.email          = email;
         this.phoneNumber    = phoneNumber;
         this.username       = username;
+        this.birthday       = birthday;
         this.password       = password;
         createdAt           = Timestamp.valueOf(LocalDateTime.now());
     }
