@@ -43,13 +43,13 @@ public class User implements UserDetails {
     private     List<UserRoles> roles = List.of(UserRoles.USER);
     private     Timestamp       createdAt;
 
-    public User(String name, String surname, String email, String phoneNumber, String username, LocalDate birthday, String password) {
+    public User(String name, String surname, String email, String phoneNumber, LocalDate birthday, String username, String password) {
         this.name           = name;
         this.surname        = surname;
         this.email          = email;
         this.phoneNumber    = phoneNumber;
-        this.username       = username;
         this.birthday       = birthday;
+        this.username       = username;
         this.password       = password;
         createdAt           = Timestamp.valueOf(LocalDateTime.now());
     }

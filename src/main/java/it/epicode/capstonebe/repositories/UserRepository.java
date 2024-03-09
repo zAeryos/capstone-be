@@ -6,15 +6,17 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface UserRepository extends JpaRepository<User, UUID>, PagingAndSortingRepository<User, UUID> {
 
+    public Optional<User>   findByUsername(String username);
     @Query("SELECT u.email FROM Utente u")
-    public List<String> getAllEmails();
+    public List<String>     getAllEmails();
     @Query("SELECT u.username FROM Utente u")
-    public List<String> getAllUsernames();
+    public List<String>     getAllUsernames();
     @Query("SELECT u.phone_number FROM Utente u")
-    public List<String> getAllPhoneNumbers();
+    public List<String>     getAllPhoneNumbers();
 
 }
