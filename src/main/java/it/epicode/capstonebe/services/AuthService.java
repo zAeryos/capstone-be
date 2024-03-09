@@ -41,10 +41,12 @@ public class AuthService {
             return userRepo.save(u);
         } catch (DataIntegrityViolationException e) {
             if (userRepo.getAllEmails().contains(u.getEmail()))
-                throw new BadRequestException("email già esistente, impossibile creare");
+                throw new BadRequestException("The email you have chosen is already assigned to another account.");
             if (userRepo.getAllUsernames().contains(u.getUsername()))
-                throw new BadRequestException("username già esistente, impossibile creare");
-            throw new InternalServerErrorException("Errore di violazione dell'* integrità dei dati: " + e.getMessage());
+                throw new BadRequestException("Username already exists, choose another username and try again.");
+            if (userRepo.getAllPhoneNumbers().contains(u.getPhoneNumber()))
+                throw new BadRequestException("The phone number you have chosen is already assigned to another account.");
+            throw new InternalServerErrorException("Error with the data sent: " + e.getMessage()); //TODO specify better error message
 
         }
     }
@@ -55,10 +57,10 @@ public class AuthService {
 
     public AccessTokenRes login(String username, String password) throws UnauthorizedException {
         User u = userRepo.findByUsername(username).orElseThrow(
-                () -> new UnauthorizedException("Email/password errati")
+                () -> new UnauthorizedException("The username or password are incorrect.")
         );
         if (!encoder.matches(password, u.getPassword()))
-            throw new UnauthorizedException("Email/password errati");
+            throw new UnauthorizedException("The username or password are incorrect.");
         return new AccessTokenRes(jwtTools.createToken(u));
     }
 
