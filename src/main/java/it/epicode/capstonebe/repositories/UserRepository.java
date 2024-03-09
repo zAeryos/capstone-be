@@ -12,11 +12,11 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<User, UUID>, PagingAndSortingRepository<User, UUID> {
 
     public Optional<User>   findByUsername(String username);
-    @Query("SELECT u.email FROM Utente u")
+    @Query("SELECT u.email FROM User u")
     public List<String>     getAllEmails();
-    @Query("SELECT u.username FROM Utente u")
+    @Query("SELECT u.username FROM User u")
     public List<String>     getAllUsernames();
-    @Query("SELECT u.phone_number FROM Utente u")
+    @Query("SELECT u.phoneNumber FROM User u")
     public List<String>     getAllPhoneNumbers();
 
 }

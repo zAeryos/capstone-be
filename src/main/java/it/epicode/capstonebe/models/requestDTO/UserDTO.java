@@ -2,6 +2,7 @@ package it.epicode.capstonebe.models.requestDTO;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
@@ -17,7 +18,7 @@ public record UserDTO (
         String password,
         @NotBlank(message = "The field \"phone number\" cannot be empty/null")
         String phoneNumber,
-        @NotBlank(message = "You must provide a birthday date")
+        @NotNull(message = "You must provide a birthday date")
         LocalDate birthday,
         @Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "Email not valid")
         String email
