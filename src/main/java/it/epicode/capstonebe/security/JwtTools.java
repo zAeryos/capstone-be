@@ -25,7 +25,7 @@ public class JwtTools {
     private String exp;
 
     public String createToken(User u) {
-        return Jwts.builder().subject(u.getId().toString()).issuedAt(new Date(System.currentTimeMillis()))
+        return Jwts.builder().subject(u.getUser_id().toString()).issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + Long.parseLong(exp)))
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes())).compact();
     }
