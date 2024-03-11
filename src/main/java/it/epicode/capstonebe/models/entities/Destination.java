@@ -16,7 +16,7 @@ public class Destination {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Setter(AccessLevel.NONE)
-    private     UUID        destination_id;
+    private     Long        destination_id;
     @Column(unique = true)
     private     String      name;
     private     String      description;
@@ -27,4 +27,3 @@ public class Destination {
     private     List<Trip>  trips;
 }
 
-//TODO Priority 1

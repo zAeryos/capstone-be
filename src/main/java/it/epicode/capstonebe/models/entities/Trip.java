@@ -35,4 +35,3 @@ public class Trip {
     }
 }
 
-//TODO Priority 2
