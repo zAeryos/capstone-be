@@ -33,8 +33,8 @@ public class DestinationService {
 
         Destination destination = new Destination();
 
-        destination.setName(destinationDTO.name());
-        destination.setDescription(destinationDTO.description());
+        destination.setName         (destinationDTO.name());
+        destination.setDescription  (destinationDTO.description());
 
         return destinationRepository.save(destination);
 
@@ -44,8 +44,16 @@ public class DestinationService {
 
         Destination destination = getById(id);
 
-        destination.setName(destinationDTO.name());
-        destination.setDescription(destinationDTO.description());
+        destination.setName         (destinationDTO.name());
+        destination.setDescription  (destinationDTO.description());
+
+        return destinationRepository.save(destination);
+
+    }
+
+    public Destination uploadImage(Destination destination, String url) throws NotFoundException {
+
+        destination.setImage(url);
 
         return destinationRepository.save(destination);
 
@@ -54,7 +62,6 @@ public class DestinationService {
     public void delete(Long id) throws NotFoundException {
 
         Destination destination = getById(id);
-
         destinationRepository.delete(destination);
 
     }

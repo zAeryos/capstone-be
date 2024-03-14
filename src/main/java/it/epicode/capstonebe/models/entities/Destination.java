@@ -14,7 +14,8 @@ import java.util.UUID;
 public class Destination {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "destination_sequence")
+    @SequenceGenerator(name = "destination_sequence", initialValue = 1, allocationSize = 1)
     @Setter(AccessLevel.NONE)
     private     Long        destination_id;
     @Column(unique = true)

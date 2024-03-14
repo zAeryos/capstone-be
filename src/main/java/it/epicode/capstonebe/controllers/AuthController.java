@@ -27,15 +27,18 @@ public class AuthController {
 
     @PostMapping("/register")
     public User register(@Validated @RequestBody UserDTO userDTO, BindingResult validation) throws BadRequestException, InternalServerErrorException {
-        System.out.println(userDTO);
+
         HandlerException.exception(validation);
         return authSvc.register(userDTO);
+
     }
 
     @PostMapping("/login")
     public AccessTokenRes login(@Validated @RequestBody LoginDTO loginDTO, BindingResult validation) throws BadRequestException, UnauthorizedException {
+
         HandlerException.exception(validation);
         return authSvc.login(loginDTO.username(), loginDTO.password());
+
     }
 
 }

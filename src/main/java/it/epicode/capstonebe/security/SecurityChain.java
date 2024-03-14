@@ -27,6 +27,7 @@ public class SecurityChain {
     private JwtFilter jwtFilter;
 
     CorsConfigurationSource configurationSource() {
+
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://127.0.0.1:5500", "http://localhost:4200", "http://localhost:4000"));
         configuration.addAllowedHeader("*");
@@ -34,12 +35,14 @@ public class SecurityChain {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
+
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
+
                 .cors(cors -> cors.configurationSource(configurationSource()))
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -47,9 +50,11 @@ public class SecurityChain {
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().permitAll()
                 );
+
         httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
 
         return httpSecurity.build();
+
     }
 }

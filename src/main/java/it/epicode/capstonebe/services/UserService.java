@@ -78,8 +78,8 @@ public class UserService {
             return(u);
         } catch (DataIntegrityViolationException e) {
             if (userRepo.getAllUsernames().contains(u.getUsername()) || userRepo.getAllEmails().contains(u.getEmail()) || userRepo.getAllPhoneNumbers().contains(u.getPhoneNumber()))
-                throw new BadRequestException("Lo username e/o la password impostati esistono già. Impossibile aggiornare");
-            throw new InternalServerErrorException("Errore di violazione dell' integrità dei dati: " + e.getMessage());
+                throw new BadRequestException("The username, email or phone number you have chosen are already taken. Try again.");
+            throw new InternalServerErrorException("Error with the data sent: " + e.getMessage());
         }
     }
 
