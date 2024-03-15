@@ -8,6 +8,7 @@ import it.epicode.capstonebe.services.DestinationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,7 @@ public class DestinationController {
     }
 
     @GetMapping("/id")
+    @PreAuthorize("hasAuthority('')")
     public Destination getById(@RequestParam Long id) throws NotFoundException {
         return destinationService.getById(id);
     }
@@ -45,7 +47,7 @@ public class DestinationController {
         return destinationService.uploadImage(destination, url);
 
     }
-
+    //TODO Fix permissions bug
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('ADMIN')")
     public Destination saveDestination(@RequestBody DestinationDTO destinationDTO, BindingResult bindingResult) throws NotFoundException, BadRequestException, InternalServerErrorException {
