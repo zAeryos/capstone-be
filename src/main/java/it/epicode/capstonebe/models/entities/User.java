@@ -28,7 +28,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Setter(AccessLevel.NONE)
-    private     UUID            id;
+    private     UUID            user_id;
     private     String          name;
     private     String          surname;
     @Column(unique = true)
@@ -42,6 +42,10 @@ public class User implements UserDetails {
     private     String          avatar;
     private     List<UserRoles> roles = List.of(UserRoles.USER);
     private     Timestamp       createdAt;
+
+    @OneToMany(mappedBy = "user")
+    private     List<Booking>   bookingList;
+    //TODO add list of saved participants
 
     public User(String name, String surname, String email, String phoneNumber, LocalDate birthday, String username, String password) {
         this.name           = name;
