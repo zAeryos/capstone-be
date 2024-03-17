@@ -8,7 +8,6 @@ import it.epicode.capstonebe.services.DestinationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -27,15 +26,28 @@ public class DestinationController {
     @Autowired
     private Cloudinary          cloudinary;
 
-    @GetMapping("")
+    @GetMapping("/getAll")
     public Page<Destination> getAllDestinations(Pageable pageable) {
         return destinationService.getAll(pageable);
     }
 
     @GetMapping("/id")
-    @PreAuthorize("hasAuthority('')")
     public Destination getById(@RequestParam Long id) throws NotFoundException {
         return destinationService.getById(id);
+    }
+
+    @PostMapping("/save")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Destination saveDestination(@RequestBody DestinationDTO destinationDTO, BindingResult bindingResult) throws NotFoundException, BadRequestException, InternalServerErrorException {
+        HandlerException.notFoundException(bindingResult);
+        return destinationService.save(destinationDTO);
+    }
+
+    @PatchMapping("/update/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public Destination updateDestination(@PathVariable Long id, @RequestBody DestinationDTO destinationDTO, BindingResult bindingResult) throws NotFoundException, BadRequestException, InternalServerErrorException {
+        HandlerException.notFoundException(bindingResult);
+        return destinationService.update(id, destinationDTO);
     }
 
     @PatchMapping("/{id}/upload")
@@ -47,25 +59,13 @@ public class DestinationController {
         return destinationService.uploadImage(destination, url);
 
     }
-    //TODO Fix permissions bug
-    @PostMapping("/save")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public Destination saveDestination(@RequestBody DestinationDTO destinationDTO, BindingResult bindingResult) throws NotFoundException, BadRequestException, InternalServerErrorException {
-        HandlerException.notFoundException(bindingResult);
-        return destinationService.save(destinationDTO);
-    }
-
-    @PutMapping("/update/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public Destination updateDestination(@PathVariable Long id, @RequestBody DestinationDTO destinationDTO, BindingResult bindingResult) throws NotFoundException, BadRequestException, InternalServerErrorException {
-        HandlerException.notFoundException(bindingResult);
-        return destinationService.update(id, destinationDTO);
-    }
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public void deleteDestination(@PathVariable Long id) throws NotFoundException {
+    public String deleteDestination(@PathVariable Long id) throws NotFoundException {
+
         destinationService.delete(id);
+        return "The destination has been successfully deleted";
     }
 
 }
