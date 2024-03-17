@@ -14,17 +14,18 @@ import java.util.UUID;
 public class Destination {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "destination_sequence")
+    @SequenceGenerator(name = "destination_sequence", initialValue = 1, allocationSize = 1)
     @Setter(AccessLevel.NONE)
-    private     UUID        destination_id;
+    private     Long        destination_id;
     @Column(unique = true)
     private     String      name;
     private     String      description;
     private     String      image;
+    @Column(name="avg_rating")
     private     double      avgRating;
 
     @OneToMany(mappedBy = "destination")
     private     List<Trip>  trips;
 }
 
-//TODO Priority 1

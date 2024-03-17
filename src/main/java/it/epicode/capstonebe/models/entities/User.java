@@ -45,6 +45,7 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private     List<Booking>   bookingList;
+    //TODO add list of saved participants
 
     public User(String name, String surname, String email, String phoneNumber, LocalDate birthday, String username, String password) {
         this.name           = name;

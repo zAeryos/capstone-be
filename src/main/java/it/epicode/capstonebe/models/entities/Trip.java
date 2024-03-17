@@ -1,11 +1,13 @@
 package it.epicode.capstonebe.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,14 +27,15 @@ public class Trip {
 
     @ManyToOne
     @JoinColumn(name = "destination_id", nullable = false)
+    @JsonIgnore
     private Destination     destination;
 
     @OneToMany(mappedBy = "trip")
-    private List<Booking>   bookingList;
+    //TODO Add JSON ignore once tested
+    private List<Booking>   bookingList = new ArrayList();
 
     public boolean availablePlaces() {
         return bookingList.size() < maxPartecipants;
     }
 }
 
-//TODO Priority 2
