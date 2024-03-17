@@ -22,6 +22,7 @@ public class Destination {
     private     String      name;
     private     String      description;
     private     String      image;
+    @Column(name="avg_rating")
     private     double      avgRating;
 
     @OneToMany(mappedBy = "destination")

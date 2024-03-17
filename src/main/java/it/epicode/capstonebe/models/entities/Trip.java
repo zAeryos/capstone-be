@@ -31,6 +31,7 @@ public class Trip {
     private Destination     destination;
 
     @OneToMany(mappedBy = "trip")
+    //TODO Add JSON ignore once tested
     private List<Booking>   bookingList = new ArrayList();
 
     public boolean availablePlaces() {
