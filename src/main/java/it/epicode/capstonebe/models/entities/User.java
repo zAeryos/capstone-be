@@ -43,7 +43,7 @@ public class User implements UserDetails {
     private     List<UserRoles> roles = List.of(UserRoles.USER);
     private     Timestamp       createdAt;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private     List<Booking>   bookingList;
     //TODO add list of saved participants
 

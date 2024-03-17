@@ -5,6 +5,7 @@ import it.epicode.capstonebe.exceptions.InternalServerErrorException;
 import it.epicode.capstonebe.exceptions.UnauthorizedException;
 import it.epicode.capstonebe.models.entities.User;
 import it.epicode.capstonebe.models.requestDTO.UserDTO;
+import it.epicode.capstonebe.models.requestDTO.UserUpdateDTO;
 import it.epicode.capstonebe.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -60,24 +61,36 @@ public class UserService {
         return u;
     }
 
-    public User update(UUID id, UserDTO user) throws BadRequestException, BadRequestException, InternalServerErrorException {
-        User u = getById(id);
+    public User update(UUID id, UserUpdateDTO userDTO) throws BadRequestException, BadRequestException, InternalServerErrorException {
+        User user = getById(id);
 
-        u.setName(user.name());
-        u.setSurname(user.surname());
-        u.setEmail(user.email());
-        u.setUsername(user.username());
+        if (userDTO.name() != null && !userDTO.name().isEmpty()) {
+            user.setName        (userDTO.name());
+        }
+        if (userDTO.surname() != null && !userDTO.surname().isEmpty()) {
+            user.setSurname     (userDTO.surname());
+        }
+        if (userDTO.email() != null && !userDTO.email().isEmpty()) {
+            user.setEmail       (userDTO.email());
+        }
+        if (userDTO.phoneNumber() != null && !userDTO.phoneNumber().isEmpty()) {
+            user.setPhoneNumber (userDTO.phoneNumber());
+        }
+        if (userDTO.username() != null && !userDTO.username().isEmpty()) {
+            user.setUsername    (userDTO.username());
+        }
+
         try {
 
-            userRepo.save(u);
+            userRepo.save(user);
             mailService.sendEmail(
-                    u.getEmail(),
+                    user.getEmail(),
                     "YOUR ACCOUNT DETAILS HAVE BEEN MODIFIED",
-                    "Hello" + u.getUsername() + ", you have modified your account details with success!"
+                    "Hello" + user.getUsername() + ", you have modified your account details with success!"
             );
-            return(u);
+            return(user);
         } catch (DataIntegrityViolationException e) {
-            if (userRepo.getAllUsernames().contains(u.getUsername()) || userRepo.getAllEmails().contains(u.getEmail()) || userRepo.getAllPhoneNumbers().contains(u.getPhoneNumber()))
+            if (userRepo.getAllUsernames().contains(user.getUsername()) || userRepo.getAllEmails().contains(user.getEmail()) || userRepo.getAllPhoneNumbers().contains(user.getPhoneNumber()))
                 throw new BadRequestException("The username, email or phone number you have chosen are already taken. Try again.");
             throw new InternalServerErrorException("Error with the data sent: " + e.getMessage());
         }
