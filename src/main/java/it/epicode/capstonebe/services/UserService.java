@@ -4,6 +4,8 @@ import it.epicode.capstonebe.exceptions.BadRequestException;
 import it.epicode.capstonebe.exceptions.InternalServerErrorException;
 import it.epicode.capstonebe.exceptions.UnauthorizedException;
 import it.epicode.capstonebe.models.entities.User;
+import it.epicode.capstonebe.models.enums.UserRoles;
+import it.epicode.capstonebe.models.requestDTO.UserAdminDTO;
 import it.epicode.capstonebe.models.requestDTO.UserDTO;
 import it.epicode.capstonebe.models.requestDTO.UserUpdateDTO;
 import it.epicode.capstonebe.repositories.UserRepository;
@@ -14,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -36,12 +39,42 @@ public class UserService {
 
     public User save(UserDTO user) throws BadRequestException, InternalServerErrorException {
         User u = new User();
-        u.setName(user.name());
-        u.setSurname(user.surname());
-        u.setPhoneNumber(user.phoneNumber());
-        u.setEmail(user.email());
-        u.setUsername(user.username());
-        u.setPassword(encoder.encode(user.password()));
+        u.setName           (user.name());
+        u.setSurname        (user.surname());
+        u.setPhoneNumber    (user.phoneNumber());
+        u.setEmail          (user.email());
+        u.setUsername       (user.username());
+        u.setPassword       (encoder.encode(user.password()));
+        try {
+            userRepo.save(u);
+            mailService.sendEmail(
+                    u.getEmail(),
+                    "You have been successfully registered.",
+                    "Welcome " + u.getName() + ", we hope to see you in our trips soon!"
+            );
+        } catch (DataIntegrityViolationException e) {
+            if (userRepo.getAllEmails().contains(u.getEmail()))
+                throw new BadRequestException("The email you have chosen is already assigned to another account.");
+            if (userRepo.getAllUsernames().contains(u.getUsername()))
+                throw new BadRequestException("Username already exists, choose another username and try again.");
+            if (userRepo.getAllPhoneNumbers().contains(u.getPhoneNumber()))
+                throw new BadRequestException("The phone number you have chosen is already assigned to another account.");
+            throw new InternalServerErrorException("Error with the data sent: " + e.getMessage());  //TODO specify better error message
+        }
+        return u;
+    }
+
+    public User saveWithRole(UserAdminDTO user) throws BadRequestException, InternalServerErrorException {
+        User u = new User();
+
+        u.setName           (user.name());
+        u.setSurname        (user.surname());
+        u.setPhoneNumber    (user.phoneNumber());
+        u.setEmail          (user.email());
+        u.setUsername       (user.username());
+        u.setPassword       (encoder.encode(user.password()));
+        u.setRoles          (user.userRoles());
+
         try {
             userRepo.save(u);
             mailService.sendEmail(
