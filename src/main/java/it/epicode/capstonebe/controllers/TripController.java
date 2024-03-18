@@ -23,26 +23,34 @@ public class TripController {
 
     @GetMapping("/getAll")
     public Page<Trip> getAllTrips(Pageable pageable) {
+
         return tripService.getAll(pageable);
+
     }
 
     @GetMapping("/id")
     public Trip getById(@RequestParam Long id) throws NotFoundException {
+
         return tripService.getById(id);
+
     }
 
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('ADMIN')")
     public Trip saveTrip(@RequestBody TripDTO tripDTO, BindingResult bindingResult) throws NotFoundException, BadRequestException, InternalServerErrorException {
+
         HandlerException.notFoundException(bindingResult);
         return tripService.save(tripDTO);
+
     }
 
     @PatchMapping("/update/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
     public Trip updateTrip(@PathVariable Long id, @RequestBody TripDTO tripDTO, BindingResult bindingResult) throws NotFoundException, BadRequestException, InternalServerErrorException {
+
         HandlerException.notFoundException(bindingResult);
         return tripService.update(id, tripDTO);
+
     }
 
     @DeleteMapping("/delete/{id}")
@@ -51,6 +59,7 @@ public class TripController {
 
         tripService.delete(id);
         return "The trip has been successfully deleted";
+
     }
 
 }

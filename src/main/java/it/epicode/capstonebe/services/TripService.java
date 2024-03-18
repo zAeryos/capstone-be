@@ -42,7 +42,7 @@ public class TripService {
         trip.setReturningDate   (tripDTO.returningDate());
         trip.setPrice           (tripDTO.price());
         trip.setMaxPartecipants (tripDTO.maxPartecipants());
-
+        
         return tripRepository.save(trip);
 
     }
