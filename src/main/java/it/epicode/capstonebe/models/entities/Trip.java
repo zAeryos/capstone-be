@@ -30,7 +30,7 @@ public class Trip {
     @JsonIgnore
     private Destination     destination;
 
-    @OneToMany(mappedBy = "trip")
+    @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL, orphanRemoval = true)
     //TODO Add JSON ignore once tested
     private List<Booking>   bookingList = new ArrayList();
 

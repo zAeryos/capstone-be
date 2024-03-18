@@ -45,6 +45,8 @@ public class BookingService {
         Booking booking = new Booking(bookingDTO.participantsNumber(), user, trip);
         booking.setTotalCost(trip.getPrice() * bookingDTO.participantsNumber());
 
+        //TODO calculate if trip has enough spaces for participants number and save after booking creation
+
         return bookingRepository.save(booking);
     }
 
