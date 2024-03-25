@@ -35,6 +35,11 @@ public class TripController {
 
     }
 
+    @GetMapping("/closest")
+    public Page<Trip> getClosestDepartureTrips(@RequestParam int pageSize) {
+        return tripService.getClosestDepartureTrips(pageSize);
+    }
+
     @PostMapping("/save")
     @PreAuthorize("hasAuthority('ADMIN')")
     public Trip saveTrip(@RequestBody TripDTO tripDTO, BindingResult bindingResult) throws NotFoundException, BadRequestException, InternalServerErrorException {

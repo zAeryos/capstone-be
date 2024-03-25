@@ -23,19 +23,18 @@ public class Trip {
     private LocalDate       departureDate;
     private LocalDate       returningDate;
     private double          price;
-    private int             maxPartecipants;
+    private int             maxParticipants;
+    private int             spotsLeft;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "destination_id", nullable = false)
-    @JsonIgnore
     private Destination     destination;
 
     @OneToMany(mappedBy = "trip", cascade = CascadeType.ALL, orphanRemoval = true)
-    //TODO Add JSON ignore once tested
     private List<Booking>   bookingList = new ArrayList();
 
     public boolean availablePlaces() {
-        return bookingList.size() < maxPartecipants;
+        return bookingList.size() < maxParticipants;
     }
 }
 

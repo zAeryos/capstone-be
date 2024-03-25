@@ -9,6 +9,7 @@ import it.epicode.capstonebe.repositories.DestinationRepository;
 import it.epicode.capstonebe.repositories.TripRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,11 @@ public class TripService {
 
     }
 
+    public Page<Trip> getClosestDepartureTrips(int pageSize) {
+        Pageable pageable = PageRequest.of(0, pageSize);
+        return tripRepository.findClosestDepartureTrips(pageable);
+    }
+
     public Trip save(TripDTO tripDTO) throws BadRequestException {
 
         Trip trip = new Trip();
@@ -41,8 +47,10 @@ public class TripService {
         trip.setDepartureDate   (tripDTO.departureDate());
         trip.setReturningDate   (tripDTO.returningDate());
         trip.setPrice           (tripDTO.price());
-        trip.setMaxPartecipants (tripDTO.maxPartecipants());
-        
+        trip.setMaxParticipants (tripDTO.maxParticipants());
+        trip.setSpotsLeft       (trip.getMaxParticipants());
+        destination.getTrips    ().add(trip);
+
         return tripRepository.save(trip);
 
     }
@@ -60,8 +68,8 @@ public class TripService {
         if (tripDTO.price() != null) {
             trip.setPrice           (tripDTO.price());
         }
-        if (tripDTO.maxPartecipants() != null) {
-            trip.setMaxPartecipants (tripDTO.maxPartecipants());
+        if (tripDTO.maxParticipants() != null) {
+            trip.setMaxParticipants (tripDTO.maxParticipants());
         }
         if (tripDTO.destinationId() != null) {
             Destination destination = destinationRepository.getById(tripDTO.destinationId());
