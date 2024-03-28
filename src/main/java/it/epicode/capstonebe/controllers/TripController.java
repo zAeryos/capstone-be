@@ -36,8 +36,15 @@ public class TripController {
     }
 
     @GetMapping("/closest")
-    public Page<Trip> getClosestDepartureTrips(@RequestParam int pageSize) {
-        return tripService.getClosestDepartureTrips(pageSize);
+    public Page<Trip> getClosestDepartureTrips(Pageable pageable) {
+
+        return tripService.getClosestDepartureTrips(pageable);
+
+    }
+
+    @GetMapping("/closest-limited")
+    public Page<Trip> getClosestDepartureTripsLimited(@RequestParam int pageSize) {
+        return tripService.getClosestDepartureTripsLimited(pageSize);
     }
 
     @PostMapping("/save")

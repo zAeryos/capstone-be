@@ -33,8 +33,12 @@ public class TripService {
 
     }
 
-    public Page<Trip> getClosestDepartureTrips(int pageSize) {
+    public Page<Trip> getClosestDepartureTripsLimited(int pageSize) {
         Pageable pageable = PageRequest.of(0, pageSize);
+        return tripRepository.findClosestDepartureTrips(pageable);
+    }
+
+    public Page<Trip> getClosestDepartureTrips(Pageable pageable) {
         return tripRepository.findClosestDepartureTrips(pageable);
     }
 
