@@ -67,12 +67,15 @@ public class JwtFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest req) throws ServletException {
         AntPathMatcher apt = new AntPathMatcher();
 
-        return      apt.match("/auth/**",                   req.getServletPath())
-                ||  apt.match("/api/destinations/id",       req.getServletPath())
-                ||  apt.match("/api/destinations/getAll",   req.getServletPath())
-                ||  apt.match("/api/trips/id",              req.getServletPath())
-                ||  apt.match("/api/trips/getAll",          req.getServletPath())
-                ||  apt.match("/experiences/**",            req.getServletPath());
+            return apt.match("/auth/**",                    req.getServletPath())
+                || apt.match("/api/destinations/id",        req.getServletPath())
+                || apt.match("/api/destinations/getAll",    req.getServletPath())
+                || apt.match("/api/trips/public/**",        req.getServletPath())
+                || apt.match("/api/trips/getAll",           req.getServletPath())
+                || apt.match("/api/trips/closest",          req.getServletPath())
+                || apt.match("/api/trips/closest-limited",  req.getServletPath())
+                || apt.match("/api/newsletter/save",        req.getServletPath())
+                || apt.match("/api/newsletter/delete/**",   req.getServletPath());
     }
 
 }
