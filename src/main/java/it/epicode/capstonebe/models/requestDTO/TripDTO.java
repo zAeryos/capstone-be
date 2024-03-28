@@ -16,7 +16,7 @@ public record TripDTO (
         @NotBlank(message = "The field \"price\" cannot be empty/null")
         Double price,
         @NotBlank(message = "The field \"maxPartecipants\" cannot be empty/null")
-        Integer maxPartecipants,
+        Integer maxParticipants,
         @NotBlank(message = "The field \"destinationId\" cannot be empty/null")
         @Min(value = 1, message = "The minimum value for the destination id is 1")
         Long destinationId

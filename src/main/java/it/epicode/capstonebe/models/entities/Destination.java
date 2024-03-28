@@ -1,10 +1,13 @@
 package it.epicode.capstonebe.models.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,7 +28,8 @@ public class Destination {
     @Column(name="avg_rating")
     private     double      avgRating;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "destination")
-    private     List<Trip>  trips;
+    private     List<Trip>  trips = new ArrayList<>();
 }
 

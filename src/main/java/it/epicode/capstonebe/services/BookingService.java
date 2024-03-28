@@ -42,12 +42,20 @@ public class BookingService {
 
         User    user    = userRepository.getById(bookingDTO.userId());
         Trip    trip    = tripRepository.getById(bookingDTO.tripId());
+
+        if (trip.getSpotsLeft() < bookingDTO.participantsNumber()) {
+            throw new IllegalArgumentException("Not enough spots left for the booking.");
+        }
+
         Booking booking = new Booking(bookingDTO.participantsNumber(), user, trip);
+
+
         booking.setTotalCost(trip.getPrice() * bookingDTO.participantsNumber());
+        trip.setSpotsLeft(trip.getSpotsLeft() - bookingDTO.participantsNumber());
 
-        //TODO calculate if trip has enough spaces for participants number and save after booking creation
+                tripRepository   .save(trip);
+        return  bookingRepository.save(booking);
 
-        return bookingRepository.save(booking);
     }
 
     public Booking updateBookingStatus(UUID bookingId, BookingStatus newStatus) throws NotFoundException {
