@@ -33,8 +33,9 @@ public class DestinationService {
 
         Destination destination = new Destination();
 
-        destination.setName         (destinationDTO.name());
-        destination.setDescription  (destinationDTO.description());
+        destination.setName             (destinationDTO.name());
+        destination.setDescription      (destinationDTO.description());
+        destination.setLongDescription  (destinationDTO.longDescription());
 
         return destinationRepository.save(destination);
 
@@ -44,8 +45,9 @@ public class DestinationService {
 
         Destination destination = getById(id);
 
-        destination.setName         (destinationDTO.name());
-        destination.setDescription  (destinationDTO.description());
+        destination.setName             (destinationDTO.name());
+        destination.setDescription      (destinationDTO.description());
+        destination.setLongDescription  (destinationDTO.longDescription());
 
         return destinationRepository.save(destination);
 
