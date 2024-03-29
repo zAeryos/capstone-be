@@ -6,6 +6,9 @@ public record DestinationDTO (
         @NotBlank(message = "The field \"name\" cannot be empty/null")
         String name,
         @NotBlank(message = "The field \"description\" cannot be empty/null")
-        String description
+        String description,
+
+        @NotBlank(message = "The field \"longDescription\" cannot be empty/null")
+        String longDescription
 ) {
 }

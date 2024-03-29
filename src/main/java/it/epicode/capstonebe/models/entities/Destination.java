@@ -24,6 +24,7 @@ public class Destination {
     @Column(unique = true)
     private     String      name;
     private     String      description;
+    private     String      longDescription;
     private     String      image;
     @Column(name="avg_rating")
     private     double      avgRating;
