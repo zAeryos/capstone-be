@@ -38,7 +38,27 @@ public class BookingService {
                 .orElseThrow(() -> new NotFoundException("Booking with id " + bookingId + " not found."));
     }
 
-    public Booking save(BookingDTO bookingDTO) {
+    public Booking save(UUID userId, BookingDTO bookingDTO) {
+
+        User    user    = userRepository.getById(userId);
+        Trip    trip    = tripRepository.getById(bookingDTO.tripId());
+
+        if (trip.getSpotsLeft() < bookingDTO.participantsNumber()) {
+            throw new IllegalArgumentException("Not enough spots left for the booking.");
+        }
+
+        Booking booking = new Booking(bookingDTO.participantsNumber(), user, trip);
+
+
+        booking.setTotalCost(trip.getPrice() * bookingDTO.participantsNumber());
+        trip.setSpotsLeft(trip.getSpotsLeft() - bookingDTO.participantsNumber());
+
+                tripRepository   .save(trip);
+        return  bookingRepository.save(booking);
+
+    }
+
+    public Booking saveAdmin(BookingDTO bookingDTO) {
 
         User    user    = userRepository.getById(bookingDTO.userId());
         Trip    trip    = tripRepository.getById(bookingDTO.tripId());
@@ -53,7 +73,7 @@ public class BookingService {
         booking.setTotalCost(trip.getPrice() * bookingDTO.participantsNumber());
         trip.setSpotsLeft(trip.getSpotsLeft() - bookingDTO.participantsNumber());
 
-                tripRepository   .save(trip);
+        tripRepository   .save(trip);
         return  bookingRepository.save(booking);
 
     }
